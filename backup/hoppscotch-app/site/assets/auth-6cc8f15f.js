@@ -1,0 +1,2 @@
+import{ai as l,X as a,aj as r,Y as i,d1 as s}from"./index-7d8b347c.js";function m(n){const e=l(a.auth.getCurrentUserStream(),a.auth.getCurrentUser());let t=null;r(()=>{e.value&&n(e.value),t=i(e,(u,o)=>{o===null&&u!==null&&n(u)})}),s(()=>{t==null||t()})}function c(n){const e=a.auth.getAuthEventsStream();let t=null;r(()=>{t=e.subscribe(u=>{n(u)})}),s(()=>{t==null||t.unsubscribe()})}export{c as a,m as o};
+//# sourceMappingURL=auth-6cc8f15f.js.map
