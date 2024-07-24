@@ -1,0 +1,35 @@
+import { PubSubService } from 'src/pubsub/pubsub.service';
+import { AuthUser } from 'src/types/AuthUser';
+import { UserCollectionService } from './user-collection.service';
+import { UserCollection, UserCollectionExportJSONData } from './user-collections.model';
+import { PaginationArgs } from 'src/types/input-types.args';
+import { CreateChildUserCollectionArgs, CreateRootUserCollectionArgs, ImportUserCollectionsFromJSONArgs, MoveUserCollectionArgs, RenameUserCollectionsArgs, UpdateUserCollectionArgs, UpdateUserCollectionsArgs } from './input-type.args';
+import { ReqType } from 'src/types/RequestTypes';
+export declare class UserCollectionResolver {
+    private readonly userCollectionService;
+    private readonly pubSub;
+    constructor(userCollectionService: UserCollectionService, pubSub: PubSubService);
+    user(user: AuthUser): Promise<User>;
+    parent(collection: UserCollection): Promise<UserCollection>;
+    childrenREST(collection: UserCollection, args: PaginationArgs): Promise<any>;
+    childrenGQL(collection: UserCollection, args: PaginationArgs): Promise<any>;
+    rootRESTUserCollections(user: AuthUser, args: PaginationArgs): Promise<any>;
+    rootGQLUserCollections(user: AuthUser, args: PaginationArgs): Promise<any>;
+    userCollection(userCollectionID: string): Promise<UserCollection>;
+    exportUserCollectionsToJSON(user: AuthUser, collectionID: string, collectionType: ReqType): Promise<UserCollectionExportJSONData>;
+    createRESTRootUserCollection(user: AuthUser, args: CreateRootUserCollectionArgs): Promise<UserCollection>;
+    createGQLRootUserCollection(user: AuthUser, args: CreateRootUserCollectionArgs): Promise<UserCollection>;
+    createGQLChildUserCollection(user: AuthUser, args: CreateChildUserCollectionArgs): Promise<UserCollection>;
+    createRESTChildUserCollection(user: AuthUser, args: CreateChildUserCollectionArgs): Promise<UserCollection>;
+    renameUserCollection(user: AuthUser, args: RenameUserCollectionsArgs): Promise<UserCollection>;
+    deleteUserCollection(userCollectionID: string, user: AuthUser): Promise<boolean>;
+    moveUserCollection(args: MoveUserCollectionArgs, user: AuthUser): Promise<UserCollection>;
+    updateUserCollectionOrder(args: UpdateUserCollectionArgs, user: AuthUser): Promise<boolean>;
+    importUserCollectionsFromJSON(args: ImportUserCollectionsFromJSONArgs, user: AuthUser): Promise<boolean>;
+    updateUserCollection(user: AuthUser, args: UpdateUserCollectionsArgs): Promise<UserCollection>;
+    userCollectionCreated(user: AuthUser): AsyncIterator<unknown, any, undefined>;
+    userCollectionUpdated(user: AuthUser): AsyncIterator<unknown, any, undefined>;
+    userCollectionRemoved(user: AuthUser): AsyncIterator<unknown, any, undefined>;
+    userCollectionMoved(user: AuthUser): AsyncIterator<unknown, any, undefined>;
+    userCollectionOrderUpdated(user: AuthUser): AsyncIterator<unknown, any, undefined>;
+}
