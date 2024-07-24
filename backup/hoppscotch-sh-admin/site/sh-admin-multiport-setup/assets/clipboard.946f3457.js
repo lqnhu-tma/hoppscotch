@@ -1,0 +1,1 @@
+function a(o){if(navigator.clipboard)navigator.clipboard.writeText(o);else{const e=document.createElement("textarea");document.body.appendChild(e),e.value=o,e.select(),document.execCommand("copy"),document.body.removeChild(e)}}export{a as c};
