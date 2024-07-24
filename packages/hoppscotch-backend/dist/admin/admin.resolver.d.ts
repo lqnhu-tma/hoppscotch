@@ -1,0 +1,32 @@
+import { Admin } from './admin.model';
+import { AdminService } from './admin.service';
+import { AuthUser } from '../types/AuthUser';
+import { InvitedUser } from './invited-user.model';
+import { PubSubService } from '../pubsub/pubsub.service';
+import { Team, TeamMember } from '../team/team.model';
+import { AddUserToTeamArgs, ChangeUserRoleInTeamArgs } from './input-types.args';
+import { UserDeletionResult } from 'src/user/user.model';
+export declare class AdminResolver {
+    private adminService;
+    private readonly pubsub;
+    constructor(adminService: AdminService, pubsub: PubSubService);
+    admin(admin: Admin): Admin;
+    inviteNewUser(adminUser: AuthUser, inviteeEmail: string): Promise<InvitedUser>;
+    revokeUserInvitationsByAdmin(inviteeEmails: string[]): Promise<boolean>;
+    removeUserByAdmin(userUID: string): Promise<boolean>;
+    removeUsersByAdmin(userUIDs: string[]): Promise<UserDeletionResult[]>;
+    makeUserAdmin(userUID: string): Promise<boolean>;
+    makeUsersAdmin(userUIDs: string[]): Promise<boolean>;
+    updateUserDisplayNameByAdmin(userUID: string, displayName: string): Promise<boolean>;
+    removeUserAsAdmin(userUID: string): Promise<boolean>;
+    demoteUsersByAdmin(userUIDs: string[]): Promise<boolean>;
+    createTeamByAdmin(adminUser: Admin, userUid: string, name: string): Promise<Team>;
+    changeUserRoleInTeamByAdmin(adminUser: Admin, args: ChangeUserRoleInTeamArgs): Promise<TeamMember>;
+    removeUserFromTeamByAdmin(adminUser: Admin, userUid: string, teamID: string): Promise<boolean>;
+    addUserToTeamByAdmin(adminUser: Admin, args: AddUserToTeamArgs): Promise<TeamMember>;
+    renameTeamByAdmin(adminUser: Admin, teamID: string, newName: string): Promise<Team>;
+    deleteTeamByAdmin(teamID: string): Promise<boolean>;
+    revokeTeamInviteByAdmin(inviteID: string): Promise<boolean>;
+    revokeShortcodeByAdmin(code: string): Promise<boolean>;
+    userInvited(admin: AuthUser): AsyncIterator<unknown, any, undefined>;
+}

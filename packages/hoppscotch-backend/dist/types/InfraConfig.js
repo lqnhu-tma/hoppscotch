@@ -1,0 +1,34 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.InfraConfigEnum = void 0;
+var InfraConfigEnum;
+(function (InfraConfigEnum) {
+    InfraConfigEnum["MAILER_SMTP_ENABLE"] = "MAILER_SMTP_ENABLE";
+    InfraConfigEnum["MAILER_USE_CUSTOM_CONFIGS"] = "MAILER_USE_CUSTOM_CONFIGS";
+    InfraConfigEnum["MAILER_SMTP_URL"] = "MAILER_SMTP_URL";
+    InfraConfigEnum["MAILER_ADDRESS_FROM"] = "MAILER_ADDRESS_FROM";
+    InfraConfigEnum["MAILER_SMTP_HOST"] = "MAILER_SMTP_HOST";
+    InfraConfigEnum["MAILER_SMTP_PORT"] = "MAILER_SMTP_PORT";
+    InfraConfigEnum["MAILER_SMTP_SECURE"] = "MAILER_SMTP_SECURE";
+    InfraConfigEnum["MAILER_SMTP_USER"] = "MAILER_SMTP_USER";
+    InfraConfigEnum["MAILER_SMTP_PASSWORD"] = "MAILER_SMTP_PASSWORD";
+    InfraConfigEnum["MAILER_TLS_REJECT_UNAUTHORIZED"] = "MAILER_TLS_REJECT_UNAUTHORIZED";
+    InfraConfigEnum["GOOGLE_CLIENT_ID"] = "GOOGLE_CLIENT_ID";
+    InfraConfigEnum["GOOGLE_CLIENT_SECRET"] = "GOOGLE_CLIENT_SECRET";
+    InfraConfigEnum["GOOGLE_CALLBACK_URL"] = "GOOGLE_CALLBACK_URL";
+    InfraConfigEnum["GOOGLE_SCOPE"] = "GOOGLE_SCOPE";
+    InfraConfigEnum["GITHUB_CLIENT_ID"] = "GITHUB_CLIENT_ID";
+    InfraConfigEnum["GITHUB_CLIENT_SECRET"] = "GITHUB_CLIENT_SECRET";
+    InfraConfigEnum["GITHUB_CALLBACK_URL"] = "GITHUB_CALLBACK_URL";
+    InfraConfigEnum["GITHUB_SCOPE"] = "GITHUB_SCOPE";
+    InfraConfigEnum["MICROSOFT_CLIENT_ID"] = "MICROSOFT_CLIENT_ID";
+    InfraConfigEnum["MICROSOFT_CLIENT_SECRET"] = "MICROSOFT_CLIENT_SECRET";
+    InfraConfigEnum["MICROSOFT_CALLBACK_URL"] = "MICROSOFT_CALLBACK_URL";
+    InfraConfigEnum["MICROSOFT_SCOPE"] = "MICROSOFT_SCOPE";
+    InfraConfigEnum["MICROSOFT_TENANT"] = "MICROSOFT_TENANT";
+    InfraConfigEnum["VITE_ALLOWED_AUTH_PROVIDERS"] = "VITE_ALLOWED_AUTH_PROVIDERS";
+    InfraConfigEnum["ALLOW_ANALYTICS_COLLECTION"] = "ALLOW_ANALYTICS_COLLECTION";
+    InfraConfigEnum["ANALYTICS_USER_ID"] = "ANALYTICS_USER_ID";
+    InfraConfigEnum["IS_FIRST_TIME_INFRA_SETUP"] = "IS_FIRST_TIME_INFRA_SETUP";
+})(InfraConfigEnum = exports.InfraConfigEnum || (exports.InfraConfigEnum = {}));
+//# sourceMappingURL=InfraConfig.js.map
