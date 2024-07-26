@@ -1,0 +1,3 @@
+Original File,Original Size,Duplicate File,Duplicate Size,Status
+test (1).json,0kb,test (2).json,0kb,not same
+test (1).json,0kb,test.json,0kb,same
