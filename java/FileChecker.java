@@ -56,12 +56,12 @@ public class FileChecker {
 
   private static String stripIndex(Path path) {
     String fileName = path.getFileName().toString();
-    return fileName.replaceAll(" \\(\\d+\\)", "");
+    return fileName.replaceAll(" ?\\(\\d+\\)", "");
   }
 
   private static Path getOriginalFile(List<Path> group) {
     return group.stream()
-      .filter(path -> !path.getFileName().toString().matches(".* \\(\\d+\\).*"))
+      .filter(path -> !path.getFileName().toString().matches(".* ?\\(\\d+\\).*"))
       .findFirst()
       .orElse(group.get(0));
   }
