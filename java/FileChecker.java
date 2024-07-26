@@ -18,9 +18,14 @@ public class FileChecker {
       return;
     }
 
-    try (BufferedWriter writer = Files.newBufferedWriter(Paths.get("output.csv"))) {
-      writer.write("Original File,Original Size,Duplicate File,Duplicate Size,Status");
-      writer.newLine();
+    try (BufferedWriter sameWriter = Files.newBufferedWriter(currentDir.resolve("duplicated_name.csv"));
+         BufferedWriter notSameWriter = Files.newBufferedWriter(currentDir.resolve("duplicated.csv"))) {
+
+      // Write headers to CSV files
+      sameWriter.write("Original File,Original Size,Duplicate File,Duplicate Size,Status");
+      sameWriter.newLine();
+      notSameWriter.write("Original File,Original Size,Duplicate File,Duplicate Size,Status");
+      notSameWriter.newLine();
 
       // Collect files in parallel
       List<Path> files = Files.walk(currentDir, 1)
@@ -44,7 +49,8 @@ public class FileChecker {
                 long duplicateSize = Files.size(duplicate);
                 String status = (originalSize == duplicateSize) ? "same" : "not same";
 
-                // Write to CSV
+                // Write to CSV based on status
+                BufferedWriter writer = "same".equals(status) ? sameWriter : notSameWriter;
                 synchronized (writer) {
                   writer.write(String.format("%s,%s,%s,%s,%s",
                     original.getFileName(), formatSize(originalSize),

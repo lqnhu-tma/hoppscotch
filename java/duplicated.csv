@@ -1,0 +1,3 @@
+Original File,Original Size,Duplicate File,Duplicate Size,Status
+test.json,209b,test(3).json,301b,not same
+test.json,209b,test (2).json,301b,not same
