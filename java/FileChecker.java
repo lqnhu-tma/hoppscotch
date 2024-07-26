@@ -1,11 +1,9 @@
-import java.math.BigDecimal;
-
 import java.io.*;
 import java.nio.file.*;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.util.*;
+import java.util.concurrent.*;
 import java.util.regex.*;
-import java.util.stream.Collectors;
+import java.util.stream.*;
 
 public class FileChecker {
   public static void main(String[] args) {
@@ -15,31 +13,42 @@ public class FileChecker {
       writer.write("Original File,Original Size,Duplicate File,Duplicate Size,Status");
       writer.newLine();
 
+      // Collect files in parallel
       List<Path> files = Files.walk(currentDir, 1)
+        .parallel()
         .filter(file -> !Files.isDirectory(file))
         .collect(Collectors.toList());
 
-      Map<String, List<Path>> groupedFiles = files.stream()
-        .collect(Collectors.groupingBy(FileChecker::stripIndex));
+      // Group files by stripped name in parallel
+      Map<String, List<Path>> groupedFiles = files.parallelStream()
+        .collect(Collectors.groupingByConcurrent(FileChecker::stripIndex));
 
-      for (Map.Entry<String, List<Path>> entry : groupedFiles.entrySet()) {
-        List<Path> group = entry.getValue();
-        if (group.size() > 1) {
-          Path original = getOriginalFile(group);
-          long originalSize = Files.size(original);
-          for (Path duplicate : group) {
-            if (!duplicate.equals(original)) {
-              long duplicateSize = Files.size(duplicate);
-              String status = (originalSize == duplicateSize) ? "same" : "not same";
-              writer.write(String.format("%s,%dkb,%s,%dkb,%s",
-                original.getFileName(), originalSize / 1024,
-                duplicate.getFileName(), duplicateSize / 1024,
-                status));
-              writer.newLine();
+      // Process groups in parallel
+      groupedFiles.entrySet().parallelStream().forEach(entry -> {
+        try {
+          List<Path> group = entry.getValue();
+          if (group.size() > 1) {
+            Path original = getOriginalFile(group);
+            long originalSize = Files.size(original);
+            for (Path duplicate : group) {
+              if (!duplicate.equals(original)) {
+                long duplicateSize = Files.size(duplicate);
+                String status = (originalSize == duplicateSize) ? "same" : "not same";
+                synchronized (writer) {
+                  writer.write(String.format("%s,%dkb,%s,%dkb,%s",
+                    original.getFileName(), originalSize / 1024,
+                    duplicate.getFileName(), duplicateSize / 1024,
+                    status));
+                  writer.newLine();
+                }
+              }
             }
           }
+        } catch (IOException e) {
+          e.printStackTrace();
         }
-      }
+      });
+
     } catch (IOException e) {
       e.printStackTrace();
     }
