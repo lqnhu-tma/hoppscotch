@@ -1,3 +1,3 @@
-Original File,Original Size,Duplicate File,Duplicate Size,Status
-test.json,209b,test(3).json,301b,not same
-test.json,209b,test (2).json,301b,not same
+Original File,Original Size,Created At,Duplicate File,Duplicate Size,Created At,Status
+test.json,209b,2024-07-26T03:40:13.2562083Z,test(3).json,301b,2024-07-26T03:40:33.5293815Z,not same
+test.json,209b,2024-07-26T03:40:13.2562083Z,test (2).json,301b,2024-07-26T03:43:47.186878Z,not same

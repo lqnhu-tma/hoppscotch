@@ -1,5 +1,6 @@
 import java.io.*;
 import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.regex.*;
@@ -22,9 +23,9 @@ public class FileChecker {
          BufferedWriter notSameWriter = Files.newBufferedWriter(currentDir.resolve("duplicated.csv"))) {
 
       // Write headers to CSV files
-      sameWriter.write("Original File,Original Size,Duplicate File,Duplicate Size,Status");
+      sameWriter.write("Original File,Original Size,Created At,Duplicate File,Duplicate Size,Created At,Status");
       sameWriter.newLine();
-      notSameWriter.write("Original File,Original Size,Duplicate File,Duplicate Size,Status");
+      notSameWriter.write("Original File,Original Size,Created At,Duplicate File,Duplicate Size,Created At,Status");
       notSameWriter.newLine();
 
       // Collect files in parallel
@@ -44,17 +45,19 @@ public class FileChecker {
           if (group.size() > 1) {
             Path original = getOriginalFile(group);
             long originalSize = Files.size(original);
+            String originalCreationTime = getCreationTime(original);
             for (Path duplicate : group) {
               if (!duplicate.equals(original)) {
                 long duplicateSize = Files.size(duplicate);
+                String duplicateCreationTime = getCreationTime(duplicate);
                 String status = (originalSize == duplicateSize) ? "same" : "not same";
 
                 // Write to CSV based on status
                 BufferedWriter writer = "same".equals(status) ? sameWriter : notSameWriter;
                 synchronized (writer) {
-                  writer.write(String.format("%s,%s,%s,%s,%s",
-                    original.getFileName(), formatSize(originalSize),
-                    duplicate.getFileName(), formatSize(duplicateSize),
+                  writer.write(String.format("%s,%s,%s,%s,%s,%s,%s",
+                    original.getFileName(), formatSize(originalSize), originalCreationTime,
+                    duplicate.getFileName(), formatSize(duplicateSize), duplicateCreationTime,
                     status));
                   writer.newLine();
                 }
@@ -93,6 +96,16 @@ public class FileChecker {
       return sizeInBytes + "b";
     } else {
       return String.format("%.1fkb", sizeInBytes / 1024.0);
+    }
+  }
+
+  private static String getCreationTime(Path path) {
+    try {
+      BasicFileAttributes attrs = Files.readAttributes(path, BasicFileAttributes.class);
+      return attrs.creationTime().toString();
+    } catch (IOException e) {
+      e.printStackTrace();
+      return "unknown";
     }
   }
 
