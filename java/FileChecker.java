@@ -35,9 +35,9 @@ public class FileChecker {
                 long duplicateSize = Files.size(duplicate);
                 String status = (originalSize == duplicateSize) ? "same" : "not same";
                 synchronized (writer) {
-                  writer.write(String.format("%s,%dkb,%s,%dkb,%s",
-                    original.getFileName(), originalSize / 1024,
-                    duplicate.getFileName(), duplicateSize / 1024,
+                  writer.write(String.format("%s,%s,%s,%s,%s",
+                    original.getFileName(), formatSize(originalSize),
+                    duplicate.getFileName(), formatSize(duplicateSize),
                     status));
                   writer.newLine();
                 }
@@ -64,5 +64,13 @@ public class FileChecker {
       .filter(path -> !path.getFileName().toString().matches(".* ?\\(\\d+\\).*"))
       .findFirst()
       .orElse(group.get(0));
+  }
+
+  private static String formatSize(long sizeInBytes) {
+    if (sizeInBytes < 1024) {
+      return sizeInBytes + "b";
+    } else {
+      return String.format("%.1fkb", sizeInBytes / 1024.0);
+    }
   }
 }

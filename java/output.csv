@@ -1,4 +1,4 @@
 Original File,Original Size,Duplicate File,Duplicate Size,Status
-test.json,0kb,test (2).json,0kb,not same
-test.json,0kb,test (1).json,0kb,same
-test.json,0kb,test(3).json,0kb,not same
+test.json,209b,test (1).json,209b,same
+test.json,209b,test(3).json,301b,not same
+test.json,209b,test (2).json,301b,not same
