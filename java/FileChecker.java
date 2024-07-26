@@ -25,16 +25,18 @@ public class FileChecker {
       for (Map.Entry<String, List<Path>> entry : groupedFiles.entrySet()) {
         List<Path> group = entry.getValue();
         if (group.size() > 1) {
-          Path original = group.get(0);
+          Path original = getOriginalFile(group);
           long originalSize = Files.size(original);
-          for (Path duplicate : group.subList(1, group.size())) {
-            long duplicateSize = Files.size(duplicate);
-            String status = (originalSize == duplicateSize) ? "same" : "not same";
-            writer.write(String.format("%s,%dkb,%s,%dkb,%s",
-              original.getFileName(), originalSize / 1024,
-              duplicate.getFileName(), duplicateSize / 1024,
-              status));
-            writer.newLine();
+          for (Path duplicate : group) {
+            if (!duplicate.equals(original)) {
+              long duplicateSize = Files.size(duplicate);
+              String status = (originalSize == duplicateSize) ? "same" : "not same";
+              writer.write(String.format("%s,%dkb,%s,%dkb,%s",
+                original.getFileName(), originalSize / 1024,
+                duplicate.getFileName(), duplicateSize / 1024,
+                status));
+              writer.newLine();
+            }
           }
         }
       }
@@ -47,5 +49,11 @@ public class FileChecker {
     String fileName = path.getFileName().toString();
     return fileName.replaceAll(" \\(\\d+\\)", "");
   }
-}
 
+  private static Path getOriginalFile(List<Path> group) {
+    return group.stream()
+      .filter(path -> !path.getFileName().toString().matches(".* \\(\\d+\\).*"))
+      .findFirst()
+      .orElse(group.get(0));
+  }
+}
